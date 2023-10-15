@@ -16,10 +16,10 @@ class WebsiteRepository
 
         if(user()){
             $websites = Website::where('status','approved')->withCount('votes')->with('categories')->orderBy('votes_count', 'desc')->get();
-            $description = 'Showing all websites sorted by vote count.';
+            $description = 'Showing all approved websites sorted by vote count.';
         }else{
             $websites = Website::with('categories')->where('status', 'approved')->get();
-            $description = 'Showing categorized websites.';
+            $description = 'Showing websites which are approved by admin.';
         }
         return ['websites' => $websites, 'description' => $description];
 

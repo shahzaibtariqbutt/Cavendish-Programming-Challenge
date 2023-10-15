@@ -44,7 +44,7 @@ class WebsiteController extends Controller
 
         return response()->json([
             'message' => 'success',
-            'description' => 'Showing all the websites under the ' .$category->name. ' category.',
+            'description' => 'Showing all approved websites (by admin) under the ' .$category->name. ' category.',
             'categories' => $category->toArray(),
         ]);
     }
