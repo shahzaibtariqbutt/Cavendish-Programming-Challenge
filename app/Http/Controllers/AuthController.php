@@ -4,12 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Models\User;
 use App\Repositories\AuthRepository;
-use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
-
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -20,19 +15,27 @@ class AuthController extends Controller
         $this->authRepository = $authRepository;
     }
 
+    /**
+     * Registering a new user.
+     */
     public function register(RegisterRequest $request)
     {
+        // using form request for validation (RegisterRequest)
         $user = $this->authRepository->register($request);
         $this->authRepository->assignRole($user);
         // $token = $user->createToken('auth_token')->plainTextToken;
+        //uncomment above line to generate token while registering
         return response()->json([
             'message' => 'success',
             'description' => 'user successfully registered.',
         ]);
     }
-
+    /**
+     * Logging in a user.
+     */
     public function login(LoginRequest $request)
     {
+        // using form request for validation (LoginRequest)
         $token = $this->authRepository->login($request);
         return response()->json([
             'message' => 'success',
@@ -40,7 +43,9 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
         ]);
     }
-
+    /**
+     * Logging out the user.
+     */
     public function logout()
     {
         $this->authRepository->logout();

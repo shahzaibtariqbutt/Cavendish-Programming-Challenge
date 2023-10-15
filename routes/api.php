@@ -25,13 +25,14 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/websites', [WebsiteController::class, 'websites']);
 Route::post('/search', [WebsiteController::class, 'search']);
+Route::post('/categories', [CategoryController::class, 'categories']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::post('/directory/store', [WebsiteController::class, 'store']);
     Route::post('/website/vote', [WebsiteController::class, 'vote']);
     Route::post('/websites', [WebsiteController::class, 'websites']);
-    Route::post('/categories', [CategoryController::class, 'categories']);
+    
 });
 
 Route::group(['prefix' => 'admin','middleware' => ['auth:sanctum', 'role:admin']], function () {

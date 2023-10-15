@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Vote;
+use App\Http\Requests\SearchRequest;
+use App\Http\Requests\VoteRequest;
+use App\Http\Requests\WebsiteDestroyRequest;
+use App\Http\Requests\WebsiteRequest;
 use App\Models\Website;
 use App\Repositories\WebsiteRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class WebsiteController extends Controller
 {
@@ -18,7 +19,7 @@ class WebsiteController extends Controller
         $this->websiteRepository = $websiteRepository;
     }
     /**
-     * Display a listing of the resource.
+     * Display a listing of the websites.
      */
     public function websites()
     {
@@ -32,32 +33,24 @@ class WebsiteController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Search the websites category wise.
      */
-    public function search(Request $request)
+    public function search(SearchRequest $request)
     {
-        $validated = $request->validate([
-            'category_id' => ['required'],
-        ]);
-
         $category = $this->websiteRepository->search($request);
 
         return response()->json([
             'message' => 'success',
-            'description' => 'Showing all approved websites (by admin) under the ' .$category->name. ' category.',
+            'description' => 'Showing all approved websites under these categories.',
             'categories' => $category->toArray(),
         ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created website in storage.
      */
-    public function store(Request $request)
+    public function store(WebsiteRequest $request)
     {
-
-        $validated = $request->validate([
-            'name' => ['required']
-        ]);
         $website = $this->websiteRepository->store($request);
         return response()->json([
             'message' => 'success',
@@ -67,15 +60,10 @@ class WebsiteController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Vote the specific website.
      */
-    public function vote(Request $request)
+    public function vote(VoteRequest $request)
     {
-        $validated = $request->validate([
-            'vote_type' => ['required'],
-            'website_id' => ['required'],
-        ]);
-
         $voteType = $this->websiteRepository->vote($request);
         return response()->json([
             'message' => 'success',
@@ -84,7 +72,7 @@ class WebsiteController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the data to just admin.
      */
     public function admin_websites(Request $request)
     {
@@ -99,24 +87,19 @@ class WebsiteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function edit(Request $request)
+    public function edit(WebsiteDestroyRequest $request)
     {
-
-        $validated = $request->validate([
-            'website_id' => ['required'],
-        ]);
         $this->websiteRepository->edit($request);
         return response()->json([
             'message' => 'success',
-            'description' => 'Website edited successfully.'
+            'description' => 'Website updated successfully. It will show in the directory if you approved it.'
         ]);
-
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(WebsiteDestroyRequest $request)
     {
         $data = $this->websiteRepository->destroy($request);
         

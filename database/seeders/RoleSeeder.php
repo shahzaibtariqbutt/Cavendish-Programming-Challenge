@@ -24,7 +24,6 @@ class RoleSeeder extends Seeder
             'name' => 'admin',
             'guard_name' => 'web',
         ]);
-
         $user = User::create([
             'first_name' => 'admin',
             'last_name' => '1',
@@ -34,7 +33,6 @@ class RoleSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
         $user->assignRole($role2);
-
         $user = User::create([
             'first_name' => 'user',
             'last_name' => '1',
@@ -44,7 +42,5 @@ class RoleSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
         $user->assignRole($role1);
-
-
     }
 }

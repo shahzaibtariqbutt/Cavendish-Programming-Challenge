@@ -10,6 +10,7 @@ use Spatie\Permission\Models\Role;
 class AuthRepository
 {
     public function register($request){
+        // registering new user 
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -21,6 +22,7 @@ class AuthRepository
 
     public function assignRole($user){
         $role = Role::where('name','user')->first();
+        //assigning role
         $user->assignRole($role);
     }
 
@@ -30,6 +32,7 @@ class AuthRepository
         }
 
         $user = User::where('email', $request['email'])->firstOrFail();
+        // creating new token
         $token = $user->createToken('auth_token')->plainTextToken;
         return $token;
 

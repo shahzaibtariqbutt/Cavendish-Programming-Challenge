@@ -30,8 +30,8 @@ class WebsiteRepository
         $category = Category::with(['websites' => function ($query) {
             $query->where('status', 'approved');
         }])
-        ->where('id', $request->category_id)
-        ->first();
+        ->whereIn('id', $request->category_ids)
+        ->get();
         return $category;
 
     }
